@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <servlet>
+        <servlet-name>mvc3</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!--        <load-on-startup>1</load-on-startup>-->
+        <!--申明配置文件,以支持前端控制器 启动工厂-->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:mvc.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>mvc3</servlet-name>
+        <url-pattern>/</url-pattern>
+<!--        用于访问静态资源-->
+<!--        <url-pattern>*.xp</url-pattern>-->
+<!-- 静态资源:
+        当用户访问静态资源的时候,其实tomcat会返回一个默认的servlet去找静态资源
+        而此时我们的mvc的拦截路径为 / DispatcherServlet却不能够访问静态资源 所以会404
+        解决方案1:只拦截自定义的后缀或路径的页面  实现不拦截静态资源  将静态资源的处理 推给tomcat
+                比如拦截*.xp  只要后缀不是.xp就不会拦截, 也可以是.action .html ....任意
+                也可以拦截某路径下的所有  viwe/**(/*只能表示一级 如viwe/hello  却不能表示多级 例如 viwe/hello/test  /**就能表示多级)
+        弊端: 此时mvc只拦截我们指定的页面 而我们自己写的Controller handler一般没有后缀 所以也不会被拦截  那就不能正常的访问handler了
+                要在访问的handler后面加上我们指定的后缀 很麻烦
+        解决方案2: mvc.xml 配置 <mvc:default-servlet-handler/>
+-->
+    </servlet-mapping>
+</web-app>

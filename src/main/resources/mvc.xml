@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/mvc
+                           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--告知springmvc 哪些包中存在 被注解的类-->
+    <context:component-scan base-package="com.xp.controller"></context:component-scan>
+    <!--注册注解开发驱动-->
+    <mvc:annotation-driven>
+        <!--注册转换器 如果使用的是jackson就不需要 因为spring内置的是jackson-->
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!-- 声明转换类型:json-->
+                        <value>application/json</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--视图解析器
+            1.捕获后端控制器的返回值 "index"
+            2.解析: 在返回值前后 拼接 ===> /index.jsp
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--前缀-->
+        <property name="prefix" value="/"></property>
+
+        <!--后缀-->
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+<!--    解决静态资源访问的问题  springmvc内部处理
+            先匹配所有Controller handler 如果都匹配
+            不到,就会返回默认的页面处理静态资源
+-->
+    <mvc:default-servlet-handler/>
+    <!--配置异常解析器-->
+    <bean class="com.xp.exresolver.MyExceptionResolver"></bean>
+    
+    <!--声明拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+<!--            <mvc:mapping path="/inert/test1"/>-->
+<!--            <mvc:mapping path="/inert/test2"/>-->
+            <mvc:mapping path="/inter/**"/>
+            <bean class="com.xp.interceptor.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

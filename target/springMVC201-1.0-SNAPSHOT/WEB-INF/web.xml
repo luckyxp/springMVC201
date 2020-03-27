@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <servlet>
-        <servlet-name>mvc3</servlet-name>
+        <servlet-name>myMvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <!--        <load-on-startup>1</load-on-startup>-->
         <!--申明配置文件,以支持前端控制器 启动工厂-->
@@ -14,7 +14,7 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>mvc3</servlet-name>
+        <servlet-name>myMvc</servlet-name>
         <url-pattern>/</url-pattern>
 <!--        用于访问静态资源-->
 <!--        <url-pattern>*.xp</url-pattern>-->
